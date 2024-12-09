@@ -2,7 +2,7 @@
 /*
 Plugin Name: Lock User Profiles
 Plugin URI: https://www.littlebizzy.com/plugins/lock-user-profiles
-Description: Prevents users, including WooCommerce users, from changing their name or email address.
+Description: Only Admins can edit user data
 Version: 1.0.0
 Author: LittleBizzy
 Author URI: https://www.littlebizzy.com
@@ -28,6 +28,11 @@ add_action( 'personal_options_update', 'lock_user_profiles_prevent_name_email_ch
 add_action( 'edit_user_profile_update', 'lock_user_profiles_prevent_name_email_change', 10, 1 );
 
 function lock_user_profiles_prevent_name_email_change( $user_id ) {
+    // allow admins to make changes
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
     // get current user data
     $current_user = get_userdata( $user_id );
 
