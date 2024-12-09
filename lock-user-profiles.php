@@ -50,9 +50,6 @@ function get_locked_user_data( $user_id ) {
 add_action( 'personal_options_update', 'collect_wp_profile_data', 10, 1 );
 add_action( 'edit_user_profile_update', 'collect_wp_profile_data', 10, 1 );
 
-// apply validation errors if restricted fields are changed
-add_filter( 'user_profile_update_errors', 'validate_wp_profile_updates', 10, 3 );
-
 // collect and sanitize wordpress core profile fields before validation
 function collect_wp_profile_data( $user_id ) {
     // skip if current user is admin
@@ -69,6 +66,9 @@ function collect_wp_profile_data( $user_id ) {
         'current'    => get_locked_user_data( $user_id ),
     ];
 }
+
+// apply validation errors if restricted fields are changed
+add_filter( 'user_profile_update_errors', 'validate_wp_profile_updates', 10, 3 );
 
 function validate_wp_profile_updates( $errors, $update, $user ) {
     global $submitted_wp_profile_data;
